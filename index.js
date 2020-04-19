@@ -19,9 +19,9 @@ const HAPPY_EMOJI = [
 const notes = {
   // Creates chapter file with the link to the video
   createChapterMarkdownFile: (title, url, i) => {
-    const paramsCase = changeCase.paramCase(title);
+    const paramsCaseTitle = changeCase.paramCase(title);
     const number = i < 10 ? `0${i + 1}` : i + 1;
-    const fileName = `${number}-${paramsCase}.md`;
+    const fileName = `${number}-${paramsCaseTitle}.md`;
     let stream = fs.createWriteStream(fileName);
     stream.once("open", function (fd) {
       stream.write(`# ${title}\n\n`);
@@ -76,9 +76,11 @@ notes.initializeIntro();
     const headings = [];
     const nodes = document.querySelectorAll(".fw4.lh-title");
     nodes.forEach((node) => {
+    const title = node.textContent.trim()
+    const paramsCaseTitle = title.replace(/\s+/g, '-').toLowerCase();
       headings.push({
-        title: node.textContent.trim(),
-        url: node.baseURI,
+        title: title,
+        url: `https://egghead.io/lessons/react-${paramsCaseTitle}`,
       });
     });
     return headings;

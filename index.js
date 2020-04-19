@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer");
 const changeCase = require("change-case");
 const fs = require("fs");
 
+const url = process.argv[2];
 const HAPPY_EMOJI = [
   "💃",
   "🎉",
@@ -51,12 +52,17 @@ const notes = {
     });
     console.log("Creating notes! This should only take a couple of seconds 💪");
   },
+
+  // create the intro file
+  initializeIntro: () => {
+    notes.createChapterMarkdownFile('intro-and-welcome', url, -1);
+}
 };
 
 notes.initializeTOC();
+notes.initializeIntro();
 
 (async () => {
-  const url = process.argv[2];
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.setViewport({

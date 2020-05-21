@@ -3,6 +3,8 @@ const changeCase = require("change-case");
 const fs = require("fs");
 
 const courseUrl = process.argv[2];
+const category = process.argv[3];
+
 const dir = './tmp'
 const HAPPY_EMOJI = [
   "💃",
@@ -79,21 +81,20 @@ notes.initializeIntro();
   // All playlist chapters have this same classname
   await page.waitForSelector(".fw4.lh-title.white");
 
-  const chapters = await page.evaluate(() => {
+  const chapters = await page.evaluate((category) => {
     const headings = [];
     const nodes = document.querySelectorAll(".fw4.lh-title");
     nodes.forEach((node) => {
     const title = node.textContent.trim()
     const paramsCaseTitle = title.replace(/\s+/g, '-').toLowerCase();
     const baseUrl = 'https://egghead.io/lessons'
-    const category = 'react'
       headings.push({
         title: title,
         url: `${baseUrl}/${category}-${paramsCaseTitle}`,
       });
     });
     return headings;
-  });
+  }, category);
   chapters.forEach((chapter, i) => {
     notes.createChapterMarkdownFile(chapter.title, chapter.url, i);
   });

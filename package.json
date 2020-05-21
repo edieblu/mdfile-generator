@@ -1,7 +1,7 @@
 {
-  "name": "@vibbio/automate-TOC",
+  "name": "@edieblu/automate-TOC",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple generator for egghead course notes",
   "main": "index.js",
   "dependencies": {
     "change-case": "^4.1.1",
@@ -12,7 +12,11 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "egghead",
+    "learner advocate",
+    "notes"
+  ],
+  "author": "@GirlsCodeMK",
+  "license": "MIT"
 }

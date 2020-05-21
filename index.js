@@ -2,7 +2,8 @@ const puppeteer = require("puppeteer");
 const changeCase = require("change-case");
 const fs = require("fs");
 
-const url = process.argv[2];
+const courseUrl = process.argv[2];
+const dir = './tmp'
 const HAPPY_EMOJI = [
   "💃",
   "🎉",
@@ -22,30 +23,34 @@ const notes = {
     const paramsCaseTitle = changeCase.paramCase(title);
     const number = i < 10 ? `0${i + 1}` : i + 1;
     const fileName = `${number}-${paramsCaseTitle}.md`;
-    let stream = fs.createWriteStream(fileName);
+    let stream = fs.createWriteStream(`${dir}/${fileName}`);
     stream.once("open", function (fd) {
       stream.write(`# ${title}\n\n`);
       stream.write(`**[📹 Video](${url})**\n`);
       stream.end();
     });
-    notes.addChapterFiletoTOC(title, fileName);
+    notes.addChapterFiletoTOC(title, fileName, i);
     const randomEmoji =
       HAPPY_EMOJI[Math.floor(Math.random() * HAPPY_EMOJI.length)];
     console.log(`Notes for chapter ${title} created ${randomEmoji}`);
   },
 
     // Creates a table of contents with a link to the file
-    addChapterFiletoTOC: (title, fileName) => {
-      let stream = fs.createWriteStream("README.md", { flags: "a" });
-      stream.once("open", function (fd) {
-        stream.write(`- [${title}](${fileName})\n\n`);
+    addChapterFiletoTOC: async(title, fileName, i) => {
+      let stream = fs.createWriteStream(`${dir}/README.md`, { flags: "a" });
+      const number = i < 9 ? `0${i+1}` : i+1
+      await stream.once("open", function (fd) {
+        stream.write(`- [${number}-${title}](${fileName})\n\n`);
         stream.end();
       });
     },
 
   // creates a README file
   initializeTOC: () => {
-    let stream = fs.createWriteStream(`README.md`);
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+  }
+    let stream = fs.createWriteStream(`${dir}/README.md`);
     stream.once("open", function (fd) {
       stream.write(`## Table of Contents\n\n`);
       stream.end();
@@ -55,7 +60,7 @@ const notes = {
 
   // create the intro file
   initializeIntro: () => {
-    notes.createChapterMarkdownFile('intro-and-welcome', url, -1);
+    notes.createChapterMarkdownFile('Intro and Welcome', courseUrl, -1);
 }
 };
 
@@ -63,13 +68,15 @@ notes.initializeTOC();
 notes.initializeIntro();
 
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
   await page.setViewport({
     width: 1200,
     height: 800,
   });
-  await page.goto(url);
+  // await page.goto(urlToken);
+  await page.goto(courseUrl);
+  // All playlist chapters have this same classname
   await page.waitForSelector(".fw4.lh-title.white");
 
   const chapters = await page.evaluate(() => {
@@ -78,9 +85,11 @@ notes.initializeIntro();
     nodes.forEach((node) => {
     const title = node.textContent.trim()
     const paramsCaseTitle = title.replace(/\s+/g, '-').toLowerCase();
+    const baseUrl = 'https://egghead.io/lessons'
+    const category = 'react'
       headings.push({
         title: title,
-        url: `https://egghead.io/lessons/react-${paramsCaseTitle}`,
+        url: `${baseUrl}/${category}-${paramsCaseTitle}`,
       });
     });
     return headings;

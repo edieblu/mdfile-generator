@@ -23,7 +23,7 @@ const notes = {
   // Creates chapter file with the link to the video
   createChapterMarkdownFile: (title, url, i) => {
     const paramsCaseTitle = changeCase.paramCase(title);
-    const number = i < 10 ? `0${i + 1}` : i + 1;
+    const number = i < 9 ? `0${i + 1}` : i + 1;
     const fileName = `${number}-${paramsCaseTitle}.md`;
     let stream = fs.createWriteStream(`${dir}/${fileName}`);
     stream.once("open", function (fd) {

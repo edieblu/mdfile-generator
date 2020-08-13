@@ -86,7 +86,7 @@ notes.initializeIntro();
     const nodes = document.querySelectorAll(".fw4.lh-title");
     nodes.forEach((node) => {
     const title = node.textContent.trim()
-    const paramsCaseTitle = title.replace(/\s+/g, '-').toLowerCase();
+    const paramsCaseTitle = title.replace(/\W+/g, '-').toLowerCase();
     const baseUrl = 'https://egghead.io/lessons'
       headings.push({
         title: title,

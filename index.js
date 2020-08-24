@@ -177,7 +177,6 @@ const getPageData = async () => {
       name: by.nextElementSibling.innerText,
       first: by.nextElementSibling.innerText.split(" ")[0],
       url: by.parentElement.href,
-      bio: by.parentElement.nextElementSibling.querySelector("p").innerText,
     };
     const img = document.querySelector(`img[alt="illustration for ${title}"]`)
       .src;
@@ -191,9 +190,23 @@ const getPageData = async () => {
     };
   });
 
+  await page.goto(data.instructor.url);
+
+  const bio = await page.evaluate(() => {
+    return document.querySelector("p").textContent;
+  });
+
   browser.close();
 
-  return data;
+  const instructor = {
+    ...data.instructor,
+    bio,
+  };
+
+  return {
+    ...data,
+    instructor,
+  };
 };
 
 const getLessonData = (lessons) =>
@@ -278,7 +291,7 @@ const createNotes = async () => {
 
 createNotes();
 
-// TODO: Fix shortened instructor bio
+// TODO: Add chalk and step by step options
 // TODO: Move some stuff into util files
 // TODO: Update README
 // TODO: Fork

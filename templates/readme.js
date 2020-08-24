@@ -3,9 +3,9 @@ const { getLessonNumber } = require("../utils/lesson");
 
 const getReadmeContent = ({ title, about, lessons, instructor, img, user }) =>
   `
-# [${title}](${courseUrl}˜)
+# [${title}](${courseUrl})
 
-<p align="center"><img src="${img}" width="300" />
+<p align="center"><img src="${img}" width="300" /></p>
 
 ## About 🔍
 

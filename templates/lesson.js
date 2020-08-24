@@ -7,8 +7,7 @@ const getLessonContent = ({ title, url, prev, next }) =>
 TODO
 
 ${(prev || next) && `---`}
-
-${prev ? `📹 [Go to Previous Lesson](${prev})` : ""}
+${prev ? `\n📹 [Go to Previous Lesson](${prev})` : ""}
 ${next ? `📹 [Go to Next Lesson](${next})` : ""}
 
 `.trim() + "\n";

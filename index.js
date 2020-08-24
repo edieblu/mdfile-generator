@@ -20,7 +20,3 @@ const questions = [
   global.githubUsername = githubUsername;
   await createNotes();
 })();
-
-// TODO: Update README
-// TODO: Fork
-// TODO: Open PR

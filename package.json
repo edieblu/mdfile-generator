@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.20.0",
+    "inquirer": "^7.3.3",
     "puppeteer": "^3.0.0"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@
   "description": "A simple generator for egghead course notes",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "inquirer": "^7.3.3",
     "puppeteer": "^3.0.0"
   },
